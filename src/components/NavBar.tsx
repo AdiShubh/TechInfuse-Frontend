@@ -19,7 +19,7 @@ const Navbar = () => {
   ];
 
   const adminLinks = [
-    ...userLinks,
+    ...commonLinks,
     { path: '/review-blogs', label: 'Review Blogs' },
   ];
 

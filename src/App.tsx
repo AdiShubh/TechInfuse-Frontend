@@ -11,6 +11,8 @@ import { Toaster } from "react-hot-toast";
 import { CreateBlog } from "./features/blogs/CreateBlog";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import ReviewBlogs from "./pages/ReviewBlogs";
+
 
 
 function App() {
@@ -25,7 +27,7 @@ function App() {
             <Route path="/register" element={<RegisterUser />} />
             
             <Route path="/my-blogs" element={<MyBlogs />} />
-            
+            <Route path="/review-blogs" element={<ReviewBlogs />} />
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="*" element={<NotFound />} />

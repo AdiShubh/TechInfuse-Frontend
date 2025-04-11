@@ -25,7 +25,7 @@ export default function BlogCard({ post }: BlogProps) {
           <img
             src={`${BASE_URL}${post.image}`}
             alt={post.title}
-            className="object-cover w-full h-full rounded-4xl"
+            className="object-fill w-full h-full rounded-4xl"
             crossOrigin="anonymous"
           />
         </figure>

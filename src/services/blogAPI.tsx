@@ -1,5 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
+export const STATUS = {
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+} as const;
+
+type BlogStatus = typeof STATUS[keyof typeof STATUS]; 
+
 export interface Blog {
   _id: string;
   title: string;
@@ -7,7 +16,7 @@ export interface Blog {
   content: string;
   image: string;
   author: { _id: string; name: string; username: string; profileImage: string };
-  status: "pending" | "approved";
+  status: BlogStatus
   createdAt: string;
 }
 
@@ -28,9 +37,9 @@ export const blogApi = createApi({
     updateBlog: builder.mutation<Blog, { id: string; data: Partial<Blog> }>({
       query: ({ id, data }) => {
         const userData = localStorage.getItem("techinfuse_user");
-        
+
         const token = userData ? JSON.parse(userData).token : null;
-        console.log("token",token)
+        console.log("token", token);
         return {
           url: `/blogs/update/${id}`,
           method: "PUT",
@@ -41,8 +50,19 @@ export const blogApi = createApi({
         };
       },
     }),
+    updateBlogStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/blogs/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+    }),
   }),
 });
 
-export const { useGetBlogsQuery, useGetBlogByIdQuery, useUpdateBlogMutation } =
-  blogApi;
+export const {
+  useGetBlogsQuery,
+  useGetBlogByIdQuery,
+  useUpdateBlogMutation,
+  useUpdateBlogStatusMutation,
+} = blogApi;

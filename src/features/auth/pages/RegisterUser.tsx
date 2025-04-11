@@ -3,6 +3,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/hooks/useAuth";
 
 type RegisterFormInputs = {
   name: string;
@@ -29,6 +31,10 @@ const schema = yup.object().shape({
 const BaseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default function RegisterUser() {
+
+  const navigate = useNavigate() 
+  const { login } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -43,6 +49,8 @@ export default function RegisterUser() {
       const response = await axios.post(`${BaseURL}/auth/register`, data);
       console.log("Registration successful:", response.data);
       toast.success("Registration Successful");
+      login(response.data);
+      navigate("/")
       reset();
     } catch (error) {
       console.error("Registration failed:", error);

@@ -43,15 +43,17 @@ export const Home = () => {
     }
   }, [blogs]);
 
-  const filteredBlogs = allBlogs.filter((blog) => {
-    const matchesSearch = blog.title
-      .toLowerCase()
-      .includes(searchText.toLowerCase());
-    const matchesCategory =
-      selectedCategory === "" || blog.category === selectedCategory;
+  const filteredBlogs = allBlogs
+    .filter((blog) => blog.status === "approved")
+    .filter((blog) => {
+      const matchesSearch = blog.title
+        .toLowerCase()
+        .includes(searchText.toLowerCase());
+      const matchesCategory =
+        selectedCategory === "" || blog.category === selectedCategory;
 
-    return matchesSearch && matchesCategory;
-  });
+      return matchesSearch && matchesCategory;
+    });
 
   useEffect(() => {
     const observer = new IntersectionObserver(

@@ -7,6 +7,7 @@ type User = {
   name: string;
   email: string;
   username: string;
+  role:string,
   profileImage: string;
   token: string;
 };

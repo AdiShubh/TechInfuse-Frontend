@@ -14,10 +14,15 @@ const categories = ["Pending", "Approved"];
 
 export const MyBlogs = () => {
   const [page, setPage] = useState(1);
-  const { data: blogs = [], isFetching } = useGetBlogsQuery({
+  const { data: blogs = [], isFetching,refetch } = useGetBlogsQuery({
     page,
     limit: LIMIT,
   });
+
+  useEffect(() => {
+    refetch(); // This ensures fresh data is pulled when the page loads
+  }, []); 
+  
   const [allBlogs, setAllBlogs] = useState<typeof blogs>([]);
 
   const [searchText, setSearchText] = useState("");

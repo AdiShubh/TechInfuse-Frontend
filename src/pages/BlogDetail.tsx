@@ -1,23 +1,39 @@
 import {
   useGetBlogByIdQuery,
   useUpdateBlogMutation,
+  useUpdateBlogStatusMutation,
 } from "../services/blogAPI";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/NavBar";
 import Hero from "../components/Hero";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
+import { useLocation } from "react-router-dom";
 
 import RichTextEditor from "../components/RichTextEditor.tsx/RichTextEditor";
 import { useAuth } from "../context/hooks/useAuth";
 import toast from "react-hot-toast";
 
+import { STATUS } from "../services/blogAPI";
+
+
+
 const BlogDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { refresh } = location.state || {}; 
+  
+  
 
   const [updateBlog] = useUpdateBlogMutation();
+  const [updateStatus] = useUpdateBlogStatusMutation();
 
   const { user } = useAuth();
+console.log(user)
+
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState({
     title: "",
@@ -29,10 +45,17 @@ const BlogDetail = () => {
   });
 
   if (!id) {
-    return <div className="text-center text-error mt-10">Blog ID not found</div>;
+    return (
+      <div className="text-center text-error mt-10">Blog ID not found</div>
+    );
   }
 
   const { data: blog, isFetching, refetch } = useGetBlogByIdQuery(id);
+  useEffect(() => {
+    if (refresh) {
+      refetch(); // Refresh blogs after status change
+    }
+  }, [refresh, refetch]);
 
   useEffect(() => {
     if (blog) {
@@ -73,12 +96,27 @@ const BlogDetail = () => {
   const isAuthor = user?._id === blog?.author?._id;
 
   if (isFetching) {
-    return <div className="container mx-auto text-center mt-10">Loading....</div>;
+    return (
+      <div className="container mx-auto text-center mt-10">Loading....</div>
+    );
   }
 
   if (!blog) {
-    return <div className="container mx-auto text-center text-error mt-10">Blog not found</div>;
+    return (
+      <div className="container mx-auto text-center text-error mt-10">
+        Blog not found
+      </div>
+    );
   }
+
+
+  const handleUpdate = async (status: "approved" | "rejected") => {
+    await updateStatus({ id: blog._id, status });
+    
+    navigate("/review-blogs" ,{ state: { refresh: true } });
+    
+  };
+
 
   return (
     <>
@@ -104,7 +142,65 @@ const BlogDetail = () => {
               ✏️ Edit
             </button>
           )}
+
+{user?.role === "admin" && blog.status === STATUS.PENDING && (
+          <div className="flex gap-4 justify-end mt-2">
+            <button
+              className="btn btn-success btn-sm"
+             
+              onClick={() => handleUpdate(STATUS.APPROVED)}
+              
+            >
+              Approve
+            </button>
+            <button
+              className="btn btn-error btn-sm"
+              onClick={() => handleUpdate(STATUS.REJECTED)}
+            >
+              Reject
+            </button>
+          </div>
+        )}
+        {user?.role === "admin" && blog.status === STATUS.APPROVED && (
+          <div className="flex gap-4 justify-end mt-2">
+            <button
+              className="btn btn-success btn-sm"
+             disabled
+              onClick={() => handleUpdate(STATUS.APPROVED)}
+              
+            >
+              Approve
+            </button>
+            <button
+              className="btn btn-error btn-sm"
+              onClick={() => handleUpdate(STATUS.REJECTED)}
+            >
+              Reject
+            </button>
+          </div>
+        )}
+        
+         {user?.role === "admin" && blog.status === STATUS.REJECTED && (
+          <div className="flex gap-4 justify-end mt-2">
+            <button
+              className="btn btn-success btn-sm"
+             
+              onClick={() => handleUpdate(STATUS.APPROVED)}
+              
+            >
+              Approve
+            </button>
+            <button
+              className="btn btn-error btn-sm"
+              disabled
+              onClick={() => handleUpdate(STATUS.REJECTED)}
+            >
+              Reject
+            </button>
+          </div>
+        )}
         </div>
+        
 
         {isEditing ? (
           <div className="space-y-4">
