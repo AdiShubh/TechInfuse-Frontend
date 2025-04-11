@@ -1,4 +1,5 @@
 import DefaultUserImage from "../assets/defailtuser.svg";
+import DOMPurify from "dompurify";
 
 interface SinglePost {
   title: string;
@@ -14,14 +15,18 @@ interface BlogProps {
 }
 
 export default function BlogCard({ post }: BlogProps) {
+
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+  
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div className="card bg-base-100 text-base-content w-96 shadow-md">
+      <div className="card text-base-content w-96 ">
         <figure className="h-56 rounded-4xl">
           <img
-            src={post.image}
+            src={`${BASE_URL}${post.image}`}
             alt={post.title}
             className="object-cover w-full h-full rounded-4xl"
+            crossOrigin="anonymous"
           />
         </figure>
 
@@ -35,7 +40,13 @@ export default function BlogCard({ post }: BlogProps) {
             </h2>
           </div>
 
-          <p className="text-sm line-clamp-5">{post.content}</p>
+          <div
+              className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert"
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(post.content),
+              }}
+            />
+
 
           <div className="flex items-center gap-2 mt-4">
             <img

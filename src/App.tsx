@@ -10,6 +10,8 @@ import About from "./pages/About";
 import { Toaster } from "react-hot-toast";
 import { CreateBlog } from "./features/blogs/CreateBlog";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+
 
 function App() {
   return (
@@ -26,7 +28,7 @@ function App() {
             
             <Route path="/about" element={<About />} />
             <Route path="/profile" element={<Profile />} />
-            
+            <Route path="*" element={<NotFound />} />
           </Route>
           <Route path="/blogs/:id" element={<BlogDetail />} />
           <Route path="/add-blog" element={<CreateBlog />} />

@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake;
+}
+
+.editor-content .ProseMirror {
+  background-color: white;
+  color: black;
+}
+
+[data-theme='dark'] .editor-content .ProseMirror {
+  background-color: #1f2937; 
+  color: white;
 }

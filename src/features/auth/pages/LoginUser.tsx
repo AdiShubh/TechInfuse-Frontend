@@ -4,6 +4,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/hooks/useAuth";
 
+import { Link } from "react-router-dom";
+
 type LoginFormData = {
   email: string;
   password: string;
@@ -14,7 +16,6 @@ export default function LoginUser() {
   const { login } = useAuth();
 
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
-
   const {
     register,
     handleSubmit,
@@ -25,6 +26,7 @@ export default function LoginUser() {
     try {
       const response = await axios.post(`${BaseURL}/auth/login`, data);
       const userData = response.data;
+      //console.log(userData);
       login(userData);
       toast.success("Login successful 🎉");
       navigate("/");
@@ -37,7 +39,9 @@ export default function LoginUser() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-base-200 rounded-lg shadow">
       <form onSubmit={handleSubmit(loginUser)} className="space-y-4">
-        <h2 className="text-2xl font-bold mb-4 text-center text-primary">Login</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center text-primary">
+          Login
+        </h2>
 
         <input
           {...register("email", { required: "Email is required" })}
@@ -64,9 +68,21 @@ export default function LoginUser() {
         </button>
 
         <div className="text-center mt-2">
-          <a href="/forgot-password" className="text-sm text-primary hover:underline">
+          <a
+            href="/forgot-password"
+            className="text-sm text-primary hover:underline"
+          >
             Forgot password?
           </a>
+        </div>
+
+        <div className="text-center mt-2">
+          <span className="text-sm">
+            Don’t have an account?
+            <Link to="/register" className="text-primary hover:underline ml-2">
+              Sign up
+            </Link>
+          </span>
         </div>
       </form>
     </div>

@@ -2,6 +2,8 @@ import { NavLink } from 'react-router-dom';
 import { useAuth } from '../context/hooks/useAuth';
 import { FaUserCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import ThemeSwitcher from './ThemeSwitcher';
+import { FaBlog } from "react-icons/fa6";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -33,8 +35,9 @@ const Navbar = () => {
     <div className="container mx-auto navbar  py-4  z-50">
       <div className="navbar-start">
         <NavLink to="/" className="flex items-center gap-1">
-          <span className='text-2xl font-bold text-primary italic'>Tech</span>
-          <span className='text-2xl font-bold text-secondary italic'>Infuse</span>
+          <FaBlog size={32} className="text-info" />
+          <span className='text-3xl font-bold text-primary italic'>Tech</span>
+          <span className='text-3xl font-bold text-info italic'>Infuse</span>
         </NavLink>
       </div>
 
@@ -56,8 +59,10 @@ const Navbar = () => {
           ))}
         </ul>
       </div>
+      <div className="navbar-end flex items-center gap-3">
+      <ThemeSwitcher />
 
-      <div className="navbar-end">
+      <div >
         {user ? (
           <div className="flex items-center gap-2">
             <NavLink to="/profile">
@@ -73,6 +78,7 @@ const Navbar = () => {
           </NavLink>
         )}
       </div>
+    </div>
     </div>
   );
 };

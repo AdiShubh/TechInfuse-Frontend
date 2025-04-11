@@ -29,8 +29,9 @@ const BlogDetail = () => {
   });
 
   if (!id) {
-    return <div>Blog ID not found</div>;
+    return <div className="text-center text-error mt-10">Blog ID not found</div>;
   }
+
   const { data: blog, isFetching, refetch } = useGetBlogByIdQuery(id);
 
   useEffect(() => {
@@ -56,14 +57,11 @@ const BlogDetail = () => {
 
     setErrors(newErrors);
 
-    // Check if any errors exist
-    if (newErrors.title || newErrors.content) {
-      return;
-    }
+    if (newErrors.title || newErrors.content) return;
 
     try {
       if (!blog?._id) return;
-      await updateBlog({ id: blog?._id, data: editedContent }).unwrap();
+      await updateBlog({ id: blog._id, data: editedContent }).unwrap();
       setIsEditing(false);
       toast.success("Blog updated successfully");
       await refetch();
@@ -75,11 +73,11 @@ const BlogDetail = () => {
   const isAuthor = user?._id === blog?.author?._id;
 
   if (isFetching) {
-    return <div className="container mx-auto">Loading....</div>;
+    return <div className="container mx-auto text-center mt-10">Loading....</div>;
   }
 
   if (!blog) {
-    return <div className="container mx-auto">Blog not found</div>;
+    return <div className="container mx-auto text-center text-error mt-10">Blog not found</div>;
   }
 
   return (
@@ -87,10 +85,10 @@ const BlogDetail = () => {
       <Navbar />
       <Hero HeroText={editedContent.title} />
 
-      <div className="container mx-auto mt-6 space-y-6">
-        <div className="flex  justify-between px-2">
-          <h1 className="text-center">
-            A blog by <strong>{blog.author.name}</strong> at{" "}
+      <div className="container mx-auto mt-6 space-y-6 px-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+          <h1 className="text-center sm:text-left text-base-content">
+            A blog by <strong>{blog.author.name}</strong> on{" "}
             {new Date(blog.createdAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
@@ -99,14 +97,12 @@ const BlogDetail = () => {
           </h1>
 
           {isAuthor && !isEditing && (
-            <div className="flex justify-end">
-              <button
-                className="btn btn-outline btn-sm"
-                onClick={() => setIsEditing(true)}
-              >
-                ✏️ Edit
-              </button>
-            </div>
+            <button
+              className="btn btn-outline btn-sm"
+              onClick={() => setIsEditing(true)}
+            >
+              ✏️ Edit
+            </button>
           )}
         </div>
 
@@ -119,10 +115,11 @@ const BlogDetail = () => {
                 setEditedContent({ ...editedContent, title: e.target.value });
                 setErrors({ ...errors, title: "" });
               }}
-              className="input input-bordered w-full"
+              className="input input-bordered w-full input-primary"
+              placeholder="Enter title"
             />
             {errors.title && (
-              <div className="text-sm text-red-500 mt-1">{errors.title}</div>
+              <div className="text-sm text-error mt-1">{errors.title}</div>
             )}
             <RichTextEditor
               value={editedContent.content}
@@ -131,14 +128,14 @@ const BlogDetail = () => {
               }
             />
             {errors.content && (
-              <div className="text-sm text-red-500 mt-1">{errors.content}</div>
+              <div className="text-sm text-error mt-1">{errors.content}</div>
             )}
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-start">
               <button className="btn btn-primary" onClick={handleSave}>
                 Save Changes
               </button>
               <button
-                className="btn btn-ghost"
+                className="btn btn-secondary"
                 onClick={() => setIsEditing(false)}
               >
                 Cancel
@@ -148,7 +145,7 @@ const BlogDetail = () => {
         ) : (
           <div className="mt-6">
             <div
-              className="prose px-2"
+              className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(blog.content),
               }}

@@ -5,5 +5,5 @@ export const createBlogSchema = yup.object().shape({
   title: yup.string().required("Title is required"),
   category: yup.string().required("Category is required"),
   content: yup.string().required().min(10, "Content should be at least 10 characters"),
-  image: yup.string().url("Image must be a valid URL").required("Image URL is required"),
+  image: yup.string().required("Image  is required"),
 });

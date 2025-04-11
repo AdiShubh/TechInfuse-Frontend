@@ -1,11 +1,9 @@
-// pages/Home.tsx
 import { useEffect, useRef, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import { useGetBlogsQuery } from "../services/blogAPI";
 import SearchBar from "../components/SerachBar";
 import CategoryFilter from "../components/CategoryList";
 import { Link } from "react-router-dom";
-
 
 import FlotActBtn from "../components/FloatActBtn";
 import { useAuth } from "../context/hooks/useAuth";
@@ -14,7 +12,7 @@ const LIMIT = 9;
 
 const categories = ["Pending", "Approved"];
 
-export const Home = () => {
+export const MyBlogs = () => {
   const [page, setPage] = useState(1);
   const { data: blogs = [], isFetching } = useGetBlogsQuery({
     page,
@@ -41,8 +39,6 @@ export const Home = () => {
 
   const userBlogs = allBlogs.filter((blog) => blog.author._id === user?._id);
 
-  console.log(userBlogs);
-
   const filteredBlogs = userBlogs.filter((blog) => {
     const matchesSearch = blog.title
       .toLowerCase()
@@ -52,8 +48,6 @@ export const Home = () => {
       blog.status.toLowerCase() === selectedCategory.toLowerCase();
     return matchesSearch && matchesStatus;
   });
-
-  console.log("Filtered Blogs", filteredBlogs);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -76,15 +70,11 @@ export const Home = () => {
     };
   }, [isFetching]);
 
-  console.log("Current user:", user);
-
   return (
-    <div>
-     
-
-      <main className="pt-10 p-4 max-w-7xl mx-auto ">
-        <div className="flex flex-wrap justify-between  gap-4  p-4">
-          <div className=" md:w1/2 sm:w-auto ">
+    <div className="bg-base-100 text-base-content min-h-screen">
+      <main className="pt-10 p-4 max-w-7xl mx-auto">
+        <div className="flex flex-wrap justify-between gap-4 p-4 ">
+          <div className="md:w-1/2 sm:w-full">
             <CategoryFilter
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
@@ -92,27 +82,28 @@ export const Home = () => {
             />
           </div>
 
-          <div className="  md:w-1/3  sm:w-auto">
+          <div className="md:w-1/3 sm:w-full">
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
           </div>
         </div>
+
         {user?.email ? <FlotActBtn /> : null}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
           {filteredBlogs.map((post) => (
             <Link
-            to={`/blogs/${post._id}`}
-            key={post._id}
-            className="flex justify-center"
-          >
-            <BlogCard key={post._id} post={post} />
-          </Link>
+              to={`/blogs/${post._id}`}
+              key={post._id}
+              className="flex justify-center"
+            >
+              <BlogCard post={post} />
+            </Link>
           ))}
         </div>
 
         <div ref={observerRef} className="py-10 text-center">
           {isFetching && (
-            <span className="loading loading-dots loading-md"></span>
+            <span className="loading loading-dots loading-md text-primary"></span>
           )}
         </div>
       </main>
@@ -120,4 +111,4 @@ export const Home = () => {
   );
 };
 
-export default Home;
+export default MyBlogs;
