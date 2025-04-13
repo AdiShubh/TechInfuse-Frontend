@@ -3,7 +3,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createBlogSchema } from "../utils/createBlogSchema";
-import { BlogFormValues } from "../blogTypes";
+import BlogFormValues from "../blogTypes";
 import { useState, ChangeEvent } from "react";
 
 
@@ -51,8 +51,8 @@ export const CreateBlog = () => {
 
     const data = await response.json();
     console.log("DATA",data)
-    setImagePreview(data.imageUrl);
-    return data.imageUrl; // Image URL returned from backend
+    const imageFullUrl = `${import.meta.env.VITE_API_BASE_URL}${data.imageUrl}`
+    return imageFullUrl; // Image URL returned from backend
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +61,8 @@ export const CreateBlog = () => {
       setImageFile(file);
       try {
         const imageUrl:string = await uploadImage(file);
-        setValue("image", imageUrl); // Set the image URL in the form data
+        setValue("image", imageUrl);
+        setImagePreview(imageUrl);
       } catch (error) {
         toast.error("Image upload failed");
         console.error(error);
