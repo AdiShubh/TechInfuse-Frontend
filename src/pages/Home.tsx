@@ -32,15 +32,16 @@ const Home = () => {
       const matchesCategory =
         selectedCategory === "" || blog.category === selectedCategory;
       return matchesStatus && matchesSearch && matchesCategory;
-    }
+    },
   });
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen">
       <main className="pt-10 p-4 max-w-7xl mx-auto">
-        {/* Filters */}
-        <div className="flex flex-wrap justify-between gap-4 p-4">
-          <div className="md:w-1/2 sm:w-full">
+        {/* Filters Section */}
+        <div className="flex flex-wrap justify-between gap-6  ">
+          {/* Category Filter */}
+          <div className="w-full md:w-2/3 lg:w-1/2 ">
             <CategoryFilter
               selectedCategory={selectedCategory}
               setSelectedCategory={setSelectedCategory}
@@ -48,13 +49,14 @@ const Home = () => {
             />
           </div>
 
-          <div className="md:w-1/3 sm:w-full">
+          {/* Search Bar */}
+          <div className="w-full md:w-1/3">
             <SearchBar searchText={searchText} setSearchText={setSearchText} />
           </div>
         </div>
 
         {/* Floating button for authenticated users */}
-        {user?.email && <FlotActBtn />}
+        {user?.role !== "admin" && user?.email && <FlotActBtn />}
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">

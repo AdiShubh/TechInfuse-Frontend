@@ -67,19 +67,19 @@ export default function LoginUser() {
           Login
         </button>
 
-        <div className="text-center mt-2">
+        {/* <div className="text-center mt-2">
           <a
             href="/forgot-password"
-            className="text-sm text-primary hover:underline"
+            className="text-md text-primary font-semibold hover:underline"
           >
             Forgot password?
           </a>
-        </div>
+        </div> */}
 
         <div className="text-center mt-2">
-          <span className="text-sm">
+          <span className="text-md">
             Don’t have an account?
-            <Link to="/register" className="text-primary hover:underline ml-2">
+            <Link to="/register" className="text-primary hover:underline ml-2 font-semibold ">
               Sign up
             </Link>
           </span>

@@ -13,7 +13,7 @@ const CategoryFilter: React.FC<Props> = ({
   categories,
 }) => {
   return (
-    <div className="flex gap-2 flex-wrap mb-6">
+    <div className="flex gap-2 flex-wrap ">
       <button
         onClick={() => setSelectedCategory('')}
         className={`btn btn-sm ${selectedCategory === '' ? 'btn-primary' : 'btn-outline'}`}

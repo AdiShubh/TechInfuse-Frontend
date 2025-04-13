@@ -49,7 +49,7 @@ const Navbar = () => {
                 to={link.path}
                 className={({ isActive }) =>
                   isActive
-                    ? 'font-semibold underline text-primary'
+                    ? 'font-semibold  text-primary'
                     : 'hover:text-secondary'
                 }
               >
