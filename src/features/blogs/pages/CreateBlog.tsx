@@ -2,20 +2,20 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createBlogSchema } from "./createBlogSchema";
-import { BlogFormValues } from "./blogTypes";
+import { createBlogSchema } from "../utils/createBlogSchema";
+import { BlogFormValues } from "../blogTypes";
 import { useState, ChangeEvent } from "react";
 
 
-import RichTextEditor from "../../components/RichTextEditor.tsx/RichTextEditor";
-import { createBlogAction } from "./actions/createBlogAction";
+import RichTextEditor from "../../../components/RichTextEditor/RichTextEditor";
+import { createBlogAction } from "../actions/createBlogAction";
 
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import Hero from "../../components/Hero";
-import Navbar from "../../components/NavBar";
+import Hero from "../../../components/Hero";
+import Navbar from "../../../components/NavBar";
 
-import { useAuth } from "../../context/hooks/useAuth";
+import { useAuth } from "../../../context/hooks/useAuth";
 
 export const CreateBlog = () => {
   const { user } = useAuth();

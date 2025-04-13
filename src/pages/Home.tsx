@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import BlogCard from "../components/BlogCard";
-import { useGetBlogsQuery } from "../services/blogAPI";
-import SearchBar from "../components/SerachBar";
+import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryList";
 import FeaturedBlog from "../components/FeaturedBlog";
 import FlotActBtn from "../components/FloatActBtn";
 import { useAuth } from "../context/hooks/useAuth";
-import { Link } from "react-router-dom";
-
-const LIMIT = 9;
+import { usePaginatedBlogs } from "../hooks/usePaginateBlogs";
+import BlogType from "../features/blogs/blogTypes"; // adjust the path
 
 const categories = [
   "Web Development",
@@ -18,69 +18,28 @@ const categories = [
   "Node JS",
 ];
 
-export const Home = () => {
-  const [page, setPage] = useState(1);
-  const { data: blogs = [], isFetching } = useGetBlogsQuery({
-    page,
-    limit: LIMIT,
-  });
-  const [allBlogs, setAllBlogs] = useState<typeof blogs>([]);
-
+const Home = () => {
+  const { user } = useAuth();
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const observerRef = useRef<HTMLDivElement | null>(null);
-
-  const { user } = useAuth();
-
-  useEffect(() => {
-    if (blogs.length) {
-      setAllBlogs((prev) => {
-        const ids = new Set(prev.map((blog) => blog._id));
-        const newBlogs = blogs.filter((blog) => !ids.has(blog._id));
-        return [...prev, ...newBlogs];
-      });
-    }
-  }, [blogs]);
-
-  const filteredBlogs = allBlogs
-    .filter((blog) => blog.status === "approved")
-    .filter((blog) => {
+  const { blogs, isFetching, observerRef } = usePaginatedBlogs({
+    filterFn: (blog: BlogType) => {
+      const matchesStatus = blog.status === "approved";
       const matchesSearch = blog.title
         .toLowerCase()
         .includes(searchText.toLowerCase());
       const matchesCategory =
         selectedCategory === "" || blog.category === selectedCategory;
-
-      return matchesSearch && matchesCategory;
-    });
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (
-          entries[0].isIntersecting &&
-          !isFetching &&
-          blogs.length === LIMIT &&
-          allBlogs.length % LIMIT === 0
-        ) {
-          setPage((prev) => prev + 1);
-        }
-      },
-      { threshold: 1 }
-    );
-
-    const current = observerRef.current;
-    if (current) observer.observe(current);
-    return () => {
-      if (current) observer.unobserve(current);
-    };
-  }, [isFetching]);
+      return matchesStatus && matchesSearch && matchesCategory;
+    }
+  });
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen">
       <main className="pt-10 p-4 max-w-7xl mx-auto">
-        <div className="flex flex-wrap justify-between gap-4 p-4  ">
+        {/* Filters */}
+        <div className="flex flex-wrap justify-between gap-4 p-4">
           <div className="md:w-1/2 sm:w-full">
             <CategoryFilter
               selectedCategory={selectedCategory}
@@ -94,16 +53,18 @@ export const Home = () => {
           </div>
         </div>
 
-        {user?.email ? <FlotActBtn /> : null}
+        {/* Floating button for authenticated users */}
+        {user?.email && <FlotActBtn />}
 
+        {/* Blog Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-6">
-          {filteredBlogs.map((post, index) =>
+          {blogs.map((post, index) =>
             index === 0 ? (
               <div
                 key={post._id}
                 className="col-span-1 sm:col-span-2 lg:col-span-3"
               >
-                <Link to={`/blogs/${post._id}`} className="block">
+                <Link to={`/blogs/${post._id}`}>
                   <FeaturedBlog post={post} />
                 </Link>
               </div>
@@ -119,7 +80,8 @@ export const Home = () => {
           )}
         </div>
 
-        {isFetching && blogs.length === LIMIT && (
+        {/* Loading indicator with infinite scroll */}
+        {isFetching && (
           <div ref={observerRef} className="py-10 text-center">
             <span className="loading loading-dots loading-md text-primary"></span>
           </div>

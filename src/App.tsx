@@ -3,15 +3,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import LoginUser from "./features/auth/pages/LoginUser";
 import RegisterUser from "./features/auth/pages/RegisterUser";
-import BlogDetail from "./pages/BlogDetail";
+import BlogDetail from "./features/blogs/pages/BlogDetail";
 import Layout from "./pages/Layout";
-import MyBlogs from "./pages/MyBlogs";
+import MyBlogs from "./features/blogs/pages/MyBlogs";
 import About from "./pages/About";
 import { Toaster } from "react-hot-toast";
-import { CreateBlog } from "./features/blogs/CreateBlog";
+import { CreateBlog } from "./features/blogs/pages/CreateBlog";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import ReviewBlogs from "./pages/ReviewBlogs";
+import ReviewBlogs from "./features/blogs/pages/ReviewBlogs";
 
 
 

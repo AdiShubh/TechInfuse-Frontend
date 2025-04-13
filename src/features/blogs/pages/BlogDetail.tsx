@@ -2,20 +2,20 @@ import {
   useGetBlogByIdQuery,
   useUpdateBlogMutation,
   useUpdateBlogStatusMutation,
-} from "../services/blogAPI";
+} from "../../../services/blogAPI";
 import { useParams } from "react-router-dom";
-import Navbar from "../components/NavBar";
-import Hero from "../components/Hero";
+import Navbar from "../../../components/NavBar";
+import Hero from "../../../components/Hero";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DOMPurify from "dompurify";
 import { useLocation } from "react-router-dom";
 
-import RichTextEditor from "../components/RichTextEditor.tsx/RichTextEditor";
-import { useAuth } from "../context/hooks/useAuth";
+import RichTextEditor from "../../../components/RichTextEditor/RichTextEditor";
+import { useAuth } from "../../../context/hooks/useAuth";
 import toast from "react-hot-toast";
 
-import { STATUS } from "../services/blogAPI";
+import { STATUS } from "../../../services/blogAPI";
 
 
 
