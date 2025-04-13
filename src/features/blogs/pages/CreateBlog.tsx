@@ -6,7 +6,6 @@ import { createBlogSchema } from "../utils/createBlogSchema";
 import BlogFormValues from "../blogTypes";
 import { useState, ChangeEvent } from "react";
 
-
 import RichTextEditor from "../../../components/RichTextEditor/RichTextEditor";
 import { createBlogAction } from "../actions/createBlogAction";
 
@@ -33,26 +32,30 @@ export const CreateBlog = () => {
     resolver: yupResolver(createBlogSchema),
   });
 
-  
-
   // Image upload handler
   const uploadImage = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
 
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/blogs/uploadBlogImage`, {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/blogs/uploadBlogImage`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to upload image");
     }
 
     const data = await response.json();
-    console.log("DATA",data)
-    const imageFullUrl = `${import.meta.env.VITE_API_BASE_URL}${data.imageUrl}`
-    return imageFullUrl; // Image URL returned from backend
+    console.log("DATA", data);
+    const imageUrl = data.imageUrl.startsWith("http")
+    ? data.imageUrl
+    : `${import.meta.env.VITE_API_BASE_URL}/${data.imageUrl.replace(/^\/+/, "")}`;
+    console.log("IMAGE URL", imageUrl);
+    return imageUrl; // Image URL returned from backend
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +63,7 @@ export const CreateBlog = () => {
     if (file) {
       setImageFile(file);
       try {
-        const imageUrl:string = await uploadImage(file);
+        const imageUrl: string = await uploadImage(file);
         setValue("image", imageUrl);
         setImagePreview(imageUrl);
       } catch (error) {
@@ -78,7 +81,6 @@ export const CreateBlog = () => {
 
     const formData = new FormData();
 
-    
     // Loop through all fields from form data
     Object.entries(data).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -89,14 +91,11 @@ export const CreateBlog = () => {
     // Add user ID
     formData.append("author", user._id);
 
-    
-
-   
     try {
       const response = await createBlogAction(formData);
-       
+
       if (!response || !response.blogId) {
-        throw new Error('Invalid response from server');
+        throw new Error("Invalid response from server");
       }
       const blogId = response.blogId;
       toast.success("Blog created successfully!");
@@ -138,7 +137,7 @@ export const CreateBlog = () => {
           </label>
           <select
             {...register("category")}
-            defaultValue="Web Development" 
+            defaultValue="Web Development"
             className="select select-bordered w-full"
           >
             <option value="React JS">React JS</option>
@@ -164,32 +163,24 @@ export const CreateBlog = () => {
           )}
         </div>
 
-        {/* <div>
-          <label className="label text-base-content font-semibold">
-            Image
-          </label>
-          <input
-            type="text"
-            {...register("image")}
-            className="input input-bordered w-full"
-          />
-          {errors.image && (
-            <p className="text-sm text-error mt-1">{errors.image.message}</p>
-          )}
-        </div> */}
-
         <div>
           <label className="label text-base-content font-semibold">Image</label>
           <input
             type="file"
-           
             className="input input-bordered w-full"
             onChange={handleImageUpload}
           />
           {errors.image && (
             <p className="text-sm text-error mt-1">{errors.image.message}</p>
           )}
-            {imagePreview && <img src={imagePreview} alt="Preview" style={{ width: 100, height: 100 }} />}
+          {imagePreview && (
+            <img
+              src={imagePreview}
+              alt="Preview"
+              style={{ width: 100, height: 100 }}
+              className="mt-4"
+            />
+          )}
         </div>
 
         <button
