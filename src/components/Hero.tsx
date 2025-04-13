@@ -3,7 +3,7 @@ import HeroBannerImage from "../assets/blog12.jpg";
 export const Hero = ({ HeroText }: { HeroText: string }) => {
   return (
     <div
-      className="container h-48 flex justify-center items-center rounded-xl mx-auto bg-neutral"
+      className="container h-48 flex justify-center items-center rounded-xl mx-auto bg-neutral "
       style={{
         backgroundImage: `url("${HeroBannerImage}")`,
         backgroundSize: "cover",
@@ -16,5 +16,6 @@ export const Hero = ({ HeroText }: { HeroText: string }) => {
     </div>
   );
 };
+   
 
 export default Hero;

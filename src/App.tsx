@@ -18,7 +18,7 @@ import ReviewBlogs from "./pages/ReviewBlogs";
 function App() {
   return (
     <>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="top-right" reverseOrder={false} />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
