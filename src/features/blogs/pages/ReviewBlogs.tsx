@@ -53,7 +53,7 @@ export default function ReviewBlogs() {
                 key={tab}
                 className={`btn ${
                   selectedTab === tab ? "btn-primary" : "btn-outline"
-                } capitalize`}
+                } capitalize mx-2`}
                 onClick={() => setSelectedTab(tab)}
               >
                 {tab}
