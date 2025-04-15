@@ -49,19 +49,24 @@ export const CreateBlog = () => {
       throw new Error("Failed to upload image");
     }
 
+    // const imageUrl = data.imageUrl.startsWith("http")
+    // ? data.imageUrl
+    // : `${import.meta.env.VITE_API_BASE_URL}/${data.imageUrl.replace(/^\/+/, "")}`;
+    // console.log("IMAGE URL", imageUrl);
+    // return imageUrl; // Image URL returned from backend
     const data = await response.json();
     console.log("DATA", data);
-    const imageUrl = data.imageUrl.startsWith("http")
-    ? data.imageUrl
-    : `${import.meta.env.VITE_API_BASE_URL}/${data.imageUrl.replace(/^\/+/, "")}`;
-    console.log("IMAGE URL", imageUrl);
-    return imageUrl; // Image URL returned from backend
+    console.log("Cloudinary Response:", data);
+
+    // Since imageUrl from Cloudinary is a full URL, no need to adjust it
+    const imageUrl = data.imageUrl;
+    return imageUrl;
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-     // setImageFile(file);
+      // setImageFile(file);
       try {
         const imageUrl: string = await uploadImage(file);
         setValue("image", imageUrl);
