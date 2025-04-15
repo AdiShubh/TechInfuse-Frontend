@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import FeaturedBlog from "../../../components/FeaturedBlog";
 import SearchBar from "../../../components/SearchBar";
@@ -35,9 +35,11 @@ export default function ReviewBlogs() {
     autoLoadMore: true,
   });
 
-  if (refresh) {
-    refetch(); // Refresh blogs after status change
-  }
+  useEffect(() => {
+    if (refresh) {
+      refetch();
+    }
+  }, [refresh, refetch]);
 
   return (
     <div className="container mx-auto  py-6">
