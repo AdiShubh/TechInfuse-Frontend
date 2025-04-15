@@ -28,6 +28,7 @@ export const CreateBlog = () => {
     formState: { errors, isSubmitting },
     reset,
     setValue,
+    trigger
   } = useForm<BlogFormValues>({
     resolver: yupResolver(createBlogSchema),
   });
@@ -69,7 +70,8 @@ export const CreateBlog = () => {
       // setImageFile(file);
       try {
         const imageUrl: string = await uploadImage(file);
-        setValue("image", imageUrl , { shouldValidate: true ,shouldDirty: true });
+        setValue("image", imageUrl, { shouldValidate: true, shouldDirty: true });
+        await trigger("image");
         setImagePreview(imageUrl);
       } catch (error) {
         toast.error("Image upload failed");
@@ -85,6 +87,8 @@ export const CreateBlog = () => {
     }
 
     const formData = new FormData();
+
+    console.log(formData)
 
     // Loop through all fields from form data
     Object.entries(data).forEach(([key, value]) => {
