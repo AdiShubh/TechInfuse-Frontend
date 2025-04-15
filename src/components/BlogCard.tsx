@@ -41,7 +41,7 @@ export default function BlogCard({ post }: BlogProps) {
           </div>
 
           <div
-              className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert"
+              className="prose prose-sm md:prose-base line-clamp-5 lg:prose-lg max-w-none dark:prose-invert"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(post.content),
               }}

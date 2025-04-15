@@ -29,7 +29,7 @@ export default function FeaturedBlog({ post }: BlogProps) {
     <div className="md:w-2/5 w-full h-full rounded-xl flex justify-center items-center">
       <img
         src={`${post.image}`} 
-        alt="Blog Banner"
+        alt={`${post.title}`}
         className="object-fill rounded-xl w-full h-full  "
         crossOrigin="anonymous"
       />
@@ -46,7 +46,7 @@ export default function FeaturedBlog({ post }: BlogProps) {
       </h2>
 
       <div
-              className="prose prose-sm md:prose-base lg:prose-lg max-w-none dark:prose-invert"
+              className="prose prose-sm md:prose-base line-clamp-3 lg:prose-lg max-w-none dark:prose-invert"
               dangerouslySetInnerHTML={{
                 __html: DOMPurify.sanitize(post.content),
               }}
