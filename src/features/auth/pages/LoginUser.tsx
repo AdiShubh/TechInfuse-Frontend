@@ -26,7 +26,7 @@ export default function LoginUser() {
     try {
       const response = await axios.post(`${BaseURL}/auth/login`, data);
       const userData = response.data;
-      //console.log(userData);
+      console.log(userData);
       login(userData);
       toast.success("Login successful 🎉");
       navigate("/");

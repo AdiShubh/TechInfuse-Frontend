@@ -14,6 +14,8 @@ export const MyBlogs = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  console.log(user)
+
   const {
     blogs: filteredBlogs,
     isFetching,

@@ -21,14 +21,14 @@ interface BlogProps {
 
 export default function FeaturedBlog({ post }: BlogProps) {
 
-  const BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+  //const BASE_URL = import.meta.env.VITE_API_BASE_URL; 
   
   return (
     <div className="container mx-auto h-58 aspect-video rounded-xl shadow-sm bg-base-100 text-base-content flex flex-col md:flex-row gap-6 items-start">
     {/* Left: Image */}
     <div className="md:w-2/5 w-full h-full rounded-xl flex justify-center items-center">
       <img
-        src={`${BASE_URL}${post.image}`}
+        src={`${post.image}`} // removed base url prefix
         alt="Blog Banner"
         className="object-fill rounded-xl w-full h-full  "
         crossOrigin="anonymous"
