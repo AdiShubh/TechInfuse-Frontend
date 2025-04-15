@@ -20,7 +20,7 @@ export const CreateBlog = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  //const [imageFile, setImageFile] = useState<File | null>(null);
 
   const {
     register,
