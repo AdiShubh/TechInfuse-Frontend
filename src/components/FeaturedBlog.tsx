@@ -2,7 +2,7 @@
 
 
 import DefaultUserImage from "../assets/defailtuser.svg";
-import defaultBlogImage from "../assets/react.svg"
+
 import DOMPurify from "dompurify";
 
 

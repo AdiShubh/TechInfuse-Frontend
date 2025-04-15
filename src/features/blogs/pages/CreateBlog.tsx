@@ -61,7 +61,7 @@ export const CreateBlog = () => {
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setImageFile(file);
+     // setImageFile(file);
       try {
         const imageUrl: string = await uploadImage(file);
         setValue("image", imageUrl);
