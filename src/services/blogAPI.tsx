@@ -23,7 +23,7 @@ export interface Blog {
 export const blogApi = createApi({
   reducerPath: "blogApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/",
+    baseUrl: `${import.meta.env.VITE_API_BASE_URL}`,
   }),
   endpoints: (builder) => ({
     getBlogs: builder.query<Blog[], { page: number; limit: number }>({

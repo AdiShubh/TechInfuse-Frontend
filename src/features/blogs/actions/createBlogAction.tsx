@@ -3,7 +3,8 @@ import axios from "axios";
 export const createBlogAction = async (formData: FormData) => {
   try {
     const response = await axios.post(
-      "http://localhost:5000/blogs/create",
+      
+      `${import.meta.env.VITE_API_BASE_URL}/blogs/create`,
       formData,
       {
         headers: {
