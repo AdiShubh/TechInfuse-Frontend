@@ -7,7 +7,7 @@ import { FaBlog } from "react-icons/fa6";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
-  const isAdmin = user?.email === 'shubham@gmail.com';
+  const isAdmin = user?.role === 'admin';
 
   const commonLinks = [
     { path: '/about', label: 'About Us' },
