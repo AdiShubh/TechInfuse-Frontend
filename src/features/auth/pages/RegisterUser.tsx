@@ -52,10 +52,18 @@ export default function RegisterUser() {
       login(response.data);
       navigate("/")
       reset();
-    } catch (error) {
+    } catch (error :any) {
       console.error("Registration failed:", error);
-      toast.error("Registration failed");
+
+    if (error.response?.status === 400 && error.response.data.message === "Email already exists") {
+      toast.error("This email is already registered. Try logging in.");
+    } else if (error.response?.status === 409 && error.response.data.message === "Username already taken") {
+      toast.error("This username is already taken. Please choose another.");
+    } else {
+      toast.error("Registration failed. Please try again.");
     }
+  }
+    
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import BlogCard from "../../../components/BlogCard";
 import SearchBar from "../../../components/SearchBar";
 import CategoryFilter from "../../../components/CategoryList";
@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import FlotActBtn from "../../../components/FloatActBtn";
 import { useAuth } from "../../../context/hooks/useAuth";
 import { usePaginatedBlogs } from "../../../hooks/usePaginateBlogs";
+import { useLocation } from "react-router-dom";
+
+const location = useLocation();
 
 const categories = ["Pending", "Approved"];
 
@@ -20,6 +23,8 @@ export const MyBlogs = () => {
     blogs: filteredBlogs,
     isFetching,
     observerRef,
+    refetch,
+    setPage,
   } = usePaginatedBlogs({
     filterFn: (blog) => {
       if (user?._id && blog.author._id !== user._id) return false;
@@ -37,6 +42,14 @@ export const MyBlogs = () => {
     limit: 9,
     autoLoadMore: true,
   });
+
+  useEffect(() => {
+    if (user?._id) {
+      refetch();
+      setPage(1); // reset to first page if needed
+    }
+  }, [location.pathname, user?._id]);
+ 
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen">

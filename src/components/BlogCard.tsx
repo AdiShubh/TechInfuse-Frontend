@@ -16,14 +16,14 @@ interface BlogProps {
 
 export default function BlogCard({ post }: BlogProps) {
 
-  //const BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+ 
   
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div className="card text-base-content w-96 ">
         <figure className="h-56 rounded-4xl">
           <img
-            src={`${post.image}`} //removed base url
+            src={`${post.image}`} 
             alt={post.title}
             className="object-fill w-full h-full rounded-4xl"
             crossOrigin="anonymous"

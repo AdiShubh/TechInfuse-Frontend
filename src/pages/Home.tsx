@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 import BlogCard from "../components/BlogCard";
 import SearchBar from "../components/SearchBar";
 import CategoryFilter from "../components/CategoryList";
@@ -22,8 +22,9 @@ const Home = () => {
   const { user } = useAuth();
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  
 
-  const { blogs, isFetching, observerRef } = usePaginatedBlogs({
+  const { blogs, isFetching, observerRef,refetch, setPage } = usePaginatedBlogs({
     filterFn: (blog: BlogType) => {
       const matchesStatus = blog.status === "approved";
       const matchesSearch = blog.title
@@ -34,6 +35,13 @@ const Home = () => {
       return matchesStatus && matchesSearch && matchesCategory;
     },
   });
+  const location = useLocation();
+  useEffect(() => {
+    
+      refetch();
+      setPage(1); // reset to first page if needed
+    
+  }, [location.pathname ]); 
 
   return (
     <div className="bg-base-100 text-base-content min-h-screen">
