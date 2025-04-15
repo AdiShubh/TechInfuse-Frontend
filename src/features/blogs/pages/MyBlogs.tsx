@@ -8,7 +8,7 @@ import { useAuth } from "../../../context/hooks/useAuth";
 import { usePaginatedBlogs } from "../../../hooks/usePaginateBlogs";
 import { useLocation } from "react-router-dom";
 
-const location = useLocation();
+
 
 const categories = ["Pending", "Approved"];
 
@@ -17,7 +17,7 @@ export const MyBlogs = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  console.log(user)
+  const location = useLocation();
 
   const {
     blogs: filteredBlogs,

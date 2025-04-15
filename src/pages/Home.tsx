@@ -36,6 +36,7 @@ const Home = () => {
     },
   });
   const location = useLocation();
+
   useEffect(() => {
     
       refetch();
