@@ -69,7 +69,7 @@ export const CreateBlog = () => {
       // setImageFile(file);
       try {
         const imageUrl: string = await uploadImage(file);
-        setValue("image", imageUrl);
+        setValue("image", imageUrl , { shouldValidate: true });
         setImagePreview(imageUrl);
       } catch (error) {
         toast.error("Image upload failed");
