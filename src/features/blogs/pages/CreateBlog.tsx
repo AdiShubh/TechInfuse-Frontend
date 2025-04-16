@@ -28,6 +28,7 @@ export const CreateBlog = () => {
     formState: { errors, isSubmitting },
     reset,
     setValue,
+    trigger
   } = useForm<BlogFormValues>({
     resolver: yupResolver(createBlogSchema),
   });
@@ -64,6 +65,7 @@ export const CreateBlog = () => {
         const imageUrl: string = await uploadImage(file);
         setValue("image", imageUrl);
         setImagePreview(imageUrl);
+        await trigger("image")
       } catch (error) {
         toast.error("Image upload failed");
         console.error(error);
