@@ -28,7 +28,6 @@ export const CreateBlog = () => {
     formState: { errors, isSubmitting },
     reset,
     setValue,
-    trigger
   } = useForm<BlogFormValues>({
     resolver: yupResolver(createBlogSchema),
   });
@@ -50,28 +49,20 @@ export const CreateBlog = () => {
       throw new Error("Failed to upload image");
     }
 
-    // const imageUrl = data.imageUrl.startsWith("http")
-    // ? data.imageUrl
-    // : `${import.meta.env.VITE_API_BASE_URL}/${data.imageUrl.replace(/^\/+/, "")}`;
-    // console.log("IMAGE URL", imageUrl);
-    // return imageUrl; // Image URL returned from backend
     const data = await response.json();
     console.log("DATA", data);
-    console.log("Cloudinary Response:", data);
-
-    // Since imageUrl from Cloudinary is a full URL, no need to adjust it
-    const imageUrl = data.imageUrl;
-    return imageUrl;
+    const imageUrl = data.imageUrl
+    console.log("IMAGE URL", imageUrl);
+    return imageUrl; // Image URL returned from backend
   };
 
   const handleImageUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // setImageFile(file);
+     // setImageFile(file);
       try {
         const imageUrl: string = await uploadImage(file);
-        setValue("image", imageUrl, { shouldValidate: true, shouldDirty: true });
-        await trigger("image");
+        setValue("image", imageUrl);
         setImagePreview(imageUrl);
       } catch (error) {
         toast.error("Image upload failed");
@@ -87,8 +78,6 @@ export const CreateBlog = () => {
     }
 
     const formData = new FormData();
-
-    console.log(formData)
 
     // Loop through all fields from form data
     Object.entries(data).forEach(([key, value]) => {
